@@ -36,5 +36,5 @@ G = nx.from_numpy_array(matrix0)
 
 # Print the edges of the graph
 print(G.edges())
-nx.draw(G, with_labels=True, node_color="skyblue", node_size=1500, font_size=16, font_color="black"
+nx.draw(G, with_labels=True, node_color="skyblue", node_size=1500, font_size=16, font_color="black")
 plt.show()
