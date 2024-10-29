@@ -1,4 +1,5 @@
 # CSE583_final_project
+<<<<<<< HEAD
 
 # Task 1: Create a simulation adjacency matrix (Courtney)
 
@@ -11,4 +12,6 @@ In this matrix there are no 'maybes'. We'll add those later. There should be 6 i
 
 
 
+=======
+>>>>>>> 22f8320 (Add my task to readme)
 I am Jiangyue Wang, my task in this branch is to iterate all uncertain relationships to get all possible graphs.
