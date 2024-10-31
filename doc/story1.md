@@ -1,0 +1,1 @@
+Dave "the leopard" Back is a researcher. Dave wants to simplify the number of images into the number of individuals in his study area. Dave is really tired of going through the images one by one (and doesn't have the funding to hire a grad student to do it for him). Dave loves simplicity and leopards and definitely isn't a leopard but a human.
