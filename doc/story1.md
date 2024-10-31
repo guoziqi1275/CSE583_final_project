@@ -1,1 +1,4 @@
-Dave "the leopard" Back is a researcher. Dave wants to simplify the number of images into the number of individuals in his study area. Dave is really tired of going through the images one by one (and doesn't have the funding to hire a grad student to do it for him). Dave loves simplicity and leopards and definitely isn't a leopard but a human.
+Dave "the leopard" Back is a researcher. Dave wants to simplify the number of images into the number of individuals in his study area. Dave is really tired of going through the images one by one (and doesn't have the funding to hire a grad student to do it for him). Dave, however, has awesome ML coding abilities and writes a ML algorithm to identify pictures of leopards (based off the spots) with some level of uncertainty. Dave has absolute faith in his ML algorithm and trusts it to create adjacency matrices that appropriately represent his images. Dave also love automation and wants to sync his ML algorithm output as an input for this project. In this case, the "user" is Dave "the leopard" Back's ML algorithm. 
+
+
+Dave loves simplicity and leopards and definitely isn't a leopard but a human.
