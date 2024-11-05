@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 # Load functions
 exec(open("scripts/check_matrix_symmetry.py").read())
+exec(open("scripts/check_transitivity.py").read())
 # Create a simulation adjacency matrix
 # This matrix has 6 individuals, one of which has no connections.
 matrix0 = np.array([[1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -34,7 +35,7 @@ matrix0 = np.array([[1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			[0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]])
 
 is_symmetric(matrix0)
-
+is_transitive(matrix0)
 # Create a graph from the adjacency matrix
 G = nx.from_numpy_array(matrix0)
 
