@@ -6,7 +6,7 @@ I have committed a .py script to our Github that creates a 21x21 matrix represen
 All possible edges (is that the right term?) are represented by 0s (no known connection) or 1s (known connection).
 In this matrix there are no 'maybes'. We'll add those later. There should be 6 identifiable individuals from this matrix. 
 
-!["simulation matrix goal"](./images/cse-583-project-simulation-matrix-drawing-1.png)
+!["simulation matrix goal"](./images/cse-583-project-simulation-matrix-drawing-1.jpg)
 
 
 
