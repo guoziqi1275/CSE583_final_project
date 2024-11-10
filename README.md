@@ -1,5 +1,9 @@
 
+
 # CSE583_final_project
+This iz Ziqi,
+my task is software interface
+
 
 # Task 1: Create a simulation adjacency matrix (Courtney)
 
