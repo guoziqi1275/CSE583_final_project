@@ -45,20 +45,26 @@ def checkTransitivity(adj_matrix):
     for i in range (0, vertices):
         # if this node is not visited
         if visited[i] == -1:
-            nodes = adj_list[i]
-            sub_edges = len(nodes)
 
+            # list of nodes connected to current node of interest
+            nodes = adj_list[i]
+            # sub_edges = len(nodes)
+
+            # for each node connected to current
             for node in nodes:
                 if nodes != adj_list[node]:
+                    # Not transitive
                     return False
                 else:
                     visited[node] = 1
+                    # Print statement for visualizing loop
+                    # print(node, nodes, visited)
 
             # mark node as visited
             visited[i] = 1
         else:
             # node has already been checked no need to check again
             continue
-    
-    return True
+    if -1 not in visited:
+        return True
 
