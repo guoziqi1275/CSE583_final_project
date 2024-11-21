@@ -29,9 +29,36 @@ def createAdjList(adj_matrix):
     
     return adj_list
 
-def check_transitivity(adj_matrix):
+def checkTransitivity(adj_matrix):
     """
     Input: n x n square matrix already checked for symmetry.
     Output: Bool. True if matrix is transitive, false otherwise
     """
     adj_list = createAdjList(adj_matrix)
+
+    # get count of vertices 
+    vertices = len(adj_list)
+
+    # nothing has been visited
+    visited = [-1] * vertices
+
+    for i in range (0, vertices):
+        # if this node is not visited
+        if visited[i] == -1:
+            nodes = adj_list[i]
+            sub_edges = len(nodes)
+
+            for node in nodes:
+                if nodes != adj_list[node]:
+                    return False
+                else:
+                    visited[node] = 1
+
+            # mark node as visited
+            visited[i] = 1
+        else:
+            # node has already been checked no need to check again
+            continue
+    
+    return True
+
