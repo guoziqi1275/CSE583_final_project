@@ -1,6 +1,7 @@
 # LeOpardLink
 
 **Welcome to LeOpard Link (LOL)**
+[<img src="images/design/LOLcroped.png">]
 
 This package is designed to assemble a visual network of nodes and edges that can identify potential individuals based on known relationships.
 
