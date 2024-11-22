@@ -1,8 +1,8 @@
-# LeOpardLink
+C:\Users\court\Downloads\LOL-logo-color.png# LeOpardLink
 
 **Welcome to LeOpard Link (LOL)**
 
-!["LOL logo"](./images/design/LOLcroped.png)
+!["LOL logo"](./images/design/LOL-logo-color.png)
 
 This package is designed to assemble a visual network of nodes and edges that can identify potential individuals based on known relationships.
 
