@@ -1,4 +1,4 @@
-C:\Users\court\Downloads\LOL-logo-color.png# LeOpardLink
+# LeOpardLink
 
 **Welcome to LeOpard Link (LOL)**
 
