@@ -146,48 +146,6 @@ def genCombos(adj_list):
     
     return combinations
 
-def DOESNOTWORKgenCombos(adj_list):
-    """
-    Generate all possible transitive combinations of an adjacency list (linked list format) by replacing -1 with 0 or 1.
-    Input: adj_list: Adjacency list in linked list format, where each node's connections
-                    are represented as [neighbor, weight].
-                    Weights are -1 (uncertain), 0 (unconnected), or 1 (connected).
-    Output:
-        list: A list of adjacency lists with all possible transitive combinations.
-    """
-    # identify all uncertain edges
-    uncertain_edges = []
-    for idn, connections in enumerate(adj_list):
-        for idc, friend in enumerate(connections):
-            if friend[1] == -1:
-                uncertain_edges.append((idn, idc))
-    print(uncertain_edges)
-
-    # number of uncertain edges
-    num_uncertain = len(uncertain_edges)
-
-    # generate all combinations of replacements (0, 1) for the uncertain edges
-    replacement_options = list(itertools.product([0, 1], repeat=num_uncertain))
-    print(replacement_options)
-
-    # generate all adjacency lists with replacements
-    combinations = []
-    for replacement in replacement_options:
-        new_adj_list = [list(node) for node in adj_list]  # Deep copy of the original list
-        for (idn, idc), new_weight in zip(uncertain_edges, replacement):
-            new_adj_list[idn][idc][1] = new_weight  # Update weight
-        combinations.append(new_adj_list)
-    
-    transitiveCombos = []
-    for combination in combinations:
-        if checkTransitivityWeighted(combination):
-            print(combination)
-            transitiveCombos.append(combination)
-        else:
-            continue
-    
-    return transitiveCombos
-
 x = createAdjList(exampleUncertain)
 # print("Adjacency List: \n" + str(x))
 
