@@ -1,16 +1,15 @@
 # Purpose: Implement Adjacency list with edge weights 
 
 # import packages
-import numpy as np
-import itertools
 import copy
+import itertools
+import numpy as np
 
 exampleUncertain = np.array([
     [1, -1, 1, 0],
     [-1, 1, -1, 0],
     [1, -1, 1, 0],
     [0, 0, 0, 1]])
-
 
 exampleTransitive = np.array([
     [1, 1, 1, 0],
@@ -23,6 +22,13 @@ exampleNotTransitive = np.array([
     [0, 1, 1, 0],
     [1, 1, 1, 0],
     [0, 0, 0, 1]])
+
+exampleNoConnections = np.array([
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]])
+
 
 def createAdjList(adj_matrix):
     """
@@ -51,8 +57,7 @@ def createAdjList(adj_matrix):
             # adj_matrix[row][column] == 0
             else:
                 adj_list[row].append([column, 0])
-    
-    
+
     return adj_list
 
 def sumWeights(node):
@@ -60,13 +65,13 @@ def sumWeights(node):
     Input: List of length n (where n is number of nodes in the graph), each element is a list of length 2 (node, weight)
     Output: Int, sum of weights connected to node
     """
-    sum = 0
+    sumW = 0
     for connection in node:
-        sum += connection[1]
+        sumW += connection[1]
     
     # this gets rid of the self connection
-    sum -= 1
-    return sum
+    sumW -= 1
+    return sumW
 
 def checkSymmetric(adj_list):
     """
@@ -88,30 +93,40 @@ def checkTransitivityWeighted(adj_list):
     """
     # get count of vertices
     vertices = len(adj_list)
+
+    # sums also plays the role of visited. If a node has not been summed it has not been visited!
     sums = [None] * vertices
 
     for idx, connections in enumerate(adj_list):
-        sum = sumWeights(connections)
-        sums[idx] = sum
+        # for current node, find sums
+        sumW = sumWeights(connections)
+
+        #update sums (visited)
+        sums[idx] = sumW
         
+        # get list of neighbors
         friends = []
         for node in connections:
-            indx = node[0]
+            idc = node[0]
             weight = node[1]
 
+            # if connected, track that connection
             if weight == 1:
-                friends.append(indx)
+                friends.append(idc)
         
+        # check those neighbors
         for friend in friends:
             # For each friend, if the number of connections of that friend is not equal to the number of connections of our current node AND if that friend has been summed
             if sums[friend] != sum and sums[friend] != None:
                 return False
-            else:
-                continue
+            # else:
+            #     continue
     return True
 
 def genCombos(adj_list):
     """
+    Input: Adjacency list with uncertainty (can handle lists with no uncertainty but why are you calling this function on that?)
+    Output: List of adjacency lists. All possible transitive and symmetric adjacency lists from the input list
     """
     # identify all uncertain edges
     uncertain_edges = []
@@ -123,12 +138,17 @@ def genCombos(adj_list):
             # if the connection is uncertain, track which parent node and which child node is uncertain
             if friend[1] == -1:
                 uncertain_edges.append((idx, idc))
-                # returns list of tuples where the 0th element is the node and the 1st element is the connection which is uncertain
-    
+                # returns list of tuple where the 0th element is the node and the 1st element is the connection which is uncertain
+
     # Generate 2^n possible combinations
     n = len(uncertain_edges)
 
+    # if there is no uncertainty
+    if n == 0:
+        return adj_list
+
     # generates all 2^n possible replacement combinations
+    # creates a list of len 2^n. Each element is an n-tuple of 0s and 1s
     replacement_options = list(itertools.product([0, 1], repeat=n))
 
     combinations = []
@@ -146,8 +166,8 @@ def genCombos(adj_list):
     
     return combinations
 
-x = createAdjList(exampleUncertain)
+x = createAdjList(exampleNoConnections)
+print(x)
 # print("Adjacency List: \n" + str(x))
 
 y = genCombos(x)
-print(y)
