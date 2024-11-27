@@ -13,7 +13,7 @@
 	- Functions to check CSV format (authentication)
 		- Function 1: Is it in the format that we want (matrix with values of 0,1,2)? 
 		- Function 2: Are there any conflicts in the matrix?
-		- Function 3: check transitivity
+		- Function 5: check transitivity
 
 - Component 3: Plot current graph (treat 2 as 0 if there's still 2s in the matrix) Input: matrix from component 2. Output: an interactive network plot.
 	- Function 3: call Jaal
@@ -32,14 +32,40 @@
 	- Function 10: get user input: "least no. inds", "most no. inds", or graph ID, and pass the corresponding graph ID to Function 3
 	- Function 3: call Jaal
 
-- Component 6: Export all possible graphs (in the format of adjacency matrix). Input: file directory, list from component 4. Output: lots of csv files.
-	- Interactive 4: a pop-up window to let user decide where to store all the matrices
-	- Function 9: covert adjacency list back to matrix
-	- Function 11: write out all matrices one by one to csv
+[comment]: # Maybe not doing this component for now...
+[comment]: # - Component 6: Export all possible graphs (in the format of adjacency matrix). [comment]: # Input: file directory, list from component 4. Output: lots of csv files.
+[comment]: # 	- Interactive 4: a pop-up window to let user decide where to store all the matrices
+[comment]: # 	- Function 9: covert adjacency list back to matrix
+[comment]: # 	- Function 11: write out all matrices one by one to csv
 
 # Interactions to complete use cases
+1. Network visualization
+
+- Component 1
+- Component 2
+- Component 3
+
+2. Individual counts
+
+- Component 1
+- Component 2
+- Component 4
+- Component 5
+
+3. Individual count - minimum case
+
+- Component 1
+- Component 2
+- Component 4
+- Component 5
 
 # Plan
+
+ 1. All functions needed (try to improve complexity, now we have O(2^(n^2))...) - Week 10
+ 2. Connect our package to streamlit - Week 10
+ 3. Make our package downloadable/installable via github, pip, or conda - Week 11
+ 4. Fully connect our package to streamlit webapp - Week 11
+ 5. Full documentation of function usage, tutorial, citations, environments - Week 12 before ddl 
 
 
 
