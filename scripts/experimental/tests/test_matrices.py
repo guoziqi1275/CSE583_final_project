@@ -76,4 +76,7 @@ def test_detect_conflicts():
         matrices.detect_conflicts(matrices.createAdjList(example_conflict))
 
 def test_strictTransitiveClosure():
-    assert matrices.createAdjList(matrices.strictTransitiveClosure(example_not_transitive_closure)) == matrices.createAdjList(example_transitive_closure)
+    assert np.array_equal(matrices.strictTransitiveClosure(example_not_transitive_closure), example_transitive_closure)
+
+def test_generateGraphsWithTransitivity():
+    assert len(matrices.generateGraphsWithTransitivity(matrices.createAdjList(example_transitive_closure))) == 3

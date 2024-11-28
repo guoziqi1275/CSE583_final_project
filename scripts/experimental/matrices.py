@@ -200,32 +200,39 @@ def detect_conflicts(adj_list):
 def strictTransitiveClosure(adj_matrix):
     n = len(adj_matrix) # Number of vertices
     
-    def updateTransitiveEdges():
-        updated = False  # Track changes during iteration
+    def updateTransitiveEdges(n, adj_matrix):  
+        
         for i in range(n):
             for j in range(n):
                 if adj_matrix[i][j] == 1:  # If there's a positive connection
                     for k in range(n):
                         if adj_matrix[j][k] == 1 and adj_matrix[i][k] == -1:  # Propagate transitivity
                             adj_matrix[i][k] = 1  # Infer positive connection
-                            updated = True
+                            
                         elif adj_matrix[j][k] == 0 and adj_matrix[i][k] == -1:  # If transitively disconnected
                             adj_matrix[i][k] = 0  # Infer negative connection
-                            updated = True
-        
-    return adj_matrix
+                            
+        return adj_matrix
+    return updateTransitiveEdges(n, adj_matrix)
 
 
 
 
 
 def generateGraphsWithTransitivity(adj_list):
+    
     all_graphs = []
-
     def dfs(current_graph, uncertain_edges, index):
         # Base case: All uncertain edges processed
         if index == len(uncertain_edges):
             all_graphs.append(copy.deepcopy(current_graph))  # Store the graph copy
+            # back change the uncertin edges (with current values 1) to -1 until meeting the uncertin edge with value 0
+            for backindex in range(index-1, -1, -1):
+                i, j = uncertain_edges[backindex]
+                if current_graph[i][j][1] == 1 | current_graph[j][i][1] == 1:
+                    updateEdge(current_graph, i, j, -1)
+                else: 
+                    break
             return
         
         i, j = uncertain_edges[index]
@@ -235,7 +242,8 @@ def generateGraphsWithTransitivity(adj_list):
             if enforceTransitivity(current_graph):  # Only proceed if transitive
                 dfs(current_graph, uncertain_edges, index + 1)
             # Backtrack: Reset to uncertain (-1)
-            updateEdge(current_graph, i, j, -1)
+            else:
+                updateEdge(current_graph, i, j, -1)
     
     def updateEdge(graph, u, v, weight):
         # Update the edge (u, v) and its reciprocal (v, u)
@@ -258,29 +266,37 @@ def generateGraphsWithTransitivity(adj_list):
                         for neighbor, weight_ik in graph[i]:
                             if neighbor == k and weight_ik == 0:
                                 return False  # Conflict detected
+                    if weight_jk == 0:
+                        for neighbor, weight_ik in graph[i]:
+                            if neighbor == k and weight_ik == 1:
+                                return False  # Conflict detected
         return True
     
     # Identify uncertain edges
     uncertain_edges = [(i, neighbor) for i in range(len(adj_list))
                        for neighbor, weight in adj_list[i] if weight == -1]
-    
+    uncertain_edges = [(i, j) for i, j in uncertain_edges if i < j]  # Remove duplicates
     dfs(copy.deepcopy(adj_list), uncertain_edges, 0)
     return all_graphs
 
 # Example graph
-adj_list = [
-    [[0, 1], [1, -1], [2, 1], [3, 0]],
-    [[0, -1], [1, 1], [2, -1], [3, 0]],
-    [[0, 1], [1, -1], [2, 1], [3, 0]],
-    [[0, 0], [1, 0], [2, 0], [3, 1]]
-]
+# adj_list = [
+#     [[0, 1],[1, -1], [2, 1], [3, 0]],
+#     [[0, -1], [1, 1],[2, -1], [3, 0]],
+#     [[0, 1], [1, -1],[2, 1], [3, 0]],
+#     [[0, 0], [1, 0], [2, 0], [3, 1]]
+# ]
 
+adj_list = createAdjList(np.array([
+    [1, 1, 1, -1, -1, 0],
+    [1, 1, 1, -1, -1, 0],
+    [1, 1, 1, -1, -1, 0],
+    [-1, -1, -1, 1, 1, -1],
+    [-1, -1, -1, 1, 1, -1],
+    [0, 0, 0, -1, -1, 1]]))
 # Generate all valid graphs
 result = generateGraphsWithTransitivity(adj_list)
 print(f"Number of valid graphs: {len(result)}")
-
-
-
 
 # x = createAdjList(exampleNoConnections)
 # print(x)
