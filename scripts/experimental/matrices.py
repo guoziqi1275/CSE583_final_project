@@ -123,51 +123,167 @@ def checkTransitivityWeighted(adj_list):
             #     continue
     return True
 
-def genCombos(adj_list):
-    """
-    Input: Adjacency list with uncertainty (can handle lists with no uncertainty but why are you calling this function on that?)
-    Output: List of adjacency lists. All possible transitive and symmetric adjacency lists from the input list
-    """
-    # identify all uncertain edges
-    uncertain_edges = []
+# Jiangyue modified this function, see below
+
+# def genCombos(adj_list):
+#     """
+#     Input: Adjacency list with uncertainty (can handle lists with no uncertainty but why are you calling this function on that?)
+#     Output: List of adjacency lists. All possible transitive and symmetric adjacency lists from the input list
+#     """
+#     # identify all uncertain edges
+#     uncertain_edges = []
     
-    # for each node in the list
-    for idx, connections in enumerate(adj_list):
-        # for each connection of each node
-        for idc, friend in enumerate(connections):
-            # if the connection is uncertain, track which parent node and which child node is uncertain
-            if friend[1] == -1:
-                uncertain_edges.append((idx, idc))
-                # returns list of tuple where the 0th element is the node and the 1st element is the connection which is uncertain
+#     # for each node in the list
+#     for idx, connections in enumerate(adj_list):
+#         # for each connection of each node
+#         for idc, friend in enumerate(connections):
+#             # if the connection is uncertain, track which parent node and which child node is uncertain
+#             if friend[1] == -1:
+#                 uncertain_edges.append((idx, idc))
+#                 # returns list of tuple where the 0th element is the node and the 1st element is the connection which is uncertain
 
-    # Generate 2^n possible combinations
-    n = len(uncertain_edges)
+#     # Generate 2^n possible combinations
+#     n = len(uncertain_edges)
 
-    # if there is no uncertainty
-    if n == 0:
-        return adj_list
+#     # if there is no uncertainty
+#     if n == 0:
+#         return adj_list
 
-    # generates all 2^n possible replacement combinations
-    # creates a list of len 2^n. Each element is an n-tuple of 0s and 1s
-    replacement_options = list(itertools.product([0, 1], repeat=n))
+#     # generates all 2^n possible replacement combinations
+#     # creates a list of len 2^n. Each element is an n-tuple of 0s and 1s
+#     replacement_options = list(itertools.product([0, 1], repeat=n))
 
-    combinations = []
-    for idx, replacement in enumerate(replacement_options):
-        # replacement is a 4-tuple containing 0 or 1. The ith element of replacement corresponds to the ith tuple of uncertain_edges
-        # temp_adjList = [list(node) for node in adj_list] # creates a copy of the original adj_list. Builds it in this manner bc of how python memory handles lists
-        temp_adjList = copy.deepcopy(adj_list)
-        for (idn, idc), replace in zip(uncertain_edges, replacement):
-            # idn: node id
-            # idc: connection id
-            # [1]: weight location
-            temp_adjList[idn][idc][1] = replace
-        if checkTransitivityWeighted(temp_adjList) and checkSymmetric(temp_adjList):
-            combinations.append(temp_adjList)
+#     combinations = []
+#     for idx, replacement in enumerate(replacement_options):
+#         # replacement is a 4-tuple containing 0 or 1. The ith element of replacement corresponds to the ith tuple of uncertain_edges
+#         # temp_adjList = [list(node) for node in adj_list] # creates a copy of the original adj_list. Builds it in this manner bc of how python memory handles lists
+#         temp_adjList = copy.deepcopy(adj_list)
+#         for (idn, idc), replace in zip(uncertain_edges, replacement):
+#             # idn: node id
+#             # idc: connection id
+#             # [1]: weight location
+#             temp_adjList[idn][idc][1] = replace
+#         if checkTransitivityWeighted(temp_adjList) and checkSymmetric(temp_adjList):
+#             combinations.append(temp_adjList)
     
-    return combinations
+#     return combinations
 
-x = createAdjList(exampleNoConnections)
-print(x)
-# print("Adjacency List: \n" + str(x))
+def detect_conflicts(adj_list):
+    """
+    Detect conflicts in the adjacency list.
+    Input: Adjacency list
+    Output: True if no conflict, otherwise raise ValueError with conflict information
+    """
+    def dfs(node, visited, start_node):
+        for neighbor, weight in adj_list[node]:
+            if neighbor in visited:
+                # Conflict detection logic
+                if visited[neighbor] != weight:
+                    raise ValueError(f"Conflicts detected between node {node} and neighbor {neighbor}!")
+                      # Conflict found
+            else:
+                visited[neighbor] = weight
+                # If a connection is found, propagate
+                if weight == 1:  
+                    if dfs(neighbor, visited, start_node):
+                        return True
+        return False
 
-y = genCombos(x)
+    for i in range(len(adj_list)):
+        visited = {i: 1}  # Mark self-connection
+        if not dfs(i, visited, i): 
+            return True  # No conflict detected
+
+
+
+
+def strictTransitiveClosure(adj_matrix):
+    n = len(adj_matrix) # Number of vertices
+    
+    def updateTransitiveEdges():
+        updated = False  # Track changes during iteration
+        for i in range(n):
+            for j in range(n):
+                if adj_matrix[i][j] == 1:  # If there's a positive connection
+                    for k in range(n):
+                        if adj_matrix[j][k] == 1 and adj_matrix[i][k] == -1:  # Propagate transitivity
+                            adj_matrix[i][k] = 1  # Infer positive connection
+                            updated = True
+                        elif adj_matrix[j][k] == 0 and adj_matrix[i][k] == -1:  # If transitively disconnected
+                            adj_matrix[i][k] = 0  # Infer negative connection
+                            updated = True
+        
+    return adj_matrix
+
+
+
+
+
+def generateGraphsWithTransitivity(adj_list):
+    all_graphs = []
+
+    def dfs(current_graph, uncertain_edges, index):
+        # Base case: All uncertain edges processed
+        if index == len(uncertain_edges):
+            all_graphs.append(copy.deepcopy(current_graph))  # Store the graph copy
+            return
+        
+        i, j = uncertain_edges[index]
+        
+        for weight in [0, 1]:  # Assign 0 or 1 to uncertain edges
+            updateEdge(current_graph, i, j, weight)
+            if enforceTransitivity(current_graph):  # Only proceed if transitive
+                dfs(current_graph, uncertain_edges, index + 1)
+            # Backtrack: Reset to uncertain (-1)
+            updateEdge(current_graph, i, j, -1)
+    
+    def updateEdge(graph, u, v, weight):
+        # Update the edge (u, v) and its reciprocal (v, u)
+        for idx, (neighbor, _) in enumerate(graph[u]):
+            if neighbor == v:
+                graph[u][idx][1] = weight
+        for idx, (neighbor, _) in enumerate(graph[v]):
+            if neighbor == u:
+                graph[v][idx][1] = weight
+
+    def enforceTransitivity(graph):
+        n = len(graph)
+        for i in range(n):
+            for j, weight_ij in graph[i]:
+                if weight_ij != 1:
+                    continue
+                # Ensure transitive rule: if i->j and j->k, then i->k must be true
+                for k, weight_jk in graph[j]:
+                    if weight_jk == 1:
+                        for neighbor, weight_ik in graph[i]:
+                            if neighbor == k and weight_ik == 0:
+                                return False  # Conflict detected
+        return True
+    
+    # Identify uncertain edges
+    uncertain_edges = [(i, neighbor) for i in range(len(adj_list))
+                       for neighbor, weight in adj_list[i] if weight == -1]
+    
+    dfs(copy.deepcopy(adj_list), uncertain_edges, 0)
+    return all_graphs
+
+# Example graph
+adj_list = [
+    [[0, 1], [1, -1], [2, 1], [3, 0]],
+    [[0, -1], [1, 1], [2, -1], [3, 0]],
+    [[0, 1], [1, -1], [2, 1], [3, 0]],
+    [[0, 0], [1, 0], [2, 0], [3, 1]]
+]
+
+# Generate all valid graphs
+result = generateGraphsWithTransitivity(adj_list)
+print(f"Number of valid graphs: {len(result)}")
+
+
+
+
+# x = createAdjList(exampleNoConnections)
+# print(x)
+# # print("Adjacency List: \n" + str(x))
+
+# y = genCombos(x)
