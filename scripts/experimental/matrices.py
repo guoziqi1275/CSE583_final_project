@@ -4,30 +4,9 @@
 import copy
 import itertools
 import numpy as np
-
-exampleUncertain = np.array([
-    [1, -1, 1, 0],
-    [-1, 1, -1, 0],
-    [1, -1, 1, 0],
-    [0, 0, 0, 1]])
-
-exampleTransitive = np.array([
-    [1, 1, 1, 0],
-    [1, 1, 1, 0],
-    [1, 1, 1, 0],
-    [0, 0, 0, 1]])
-
-exampleNotTransitive = np.array([
-    [1, 0, 1, 0],
-    [0, 1, 1, 0],
-    [1, 1, 1, 0],
-    [0, 0, 0, 1]])
-
-exampleNoConnections = np.array([
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1]])
+import pandas as pd
+import networkx as nx
+from jaal import Jaal
 
 
 def createAdjList(adj_matrix):
@@ -168,6 +147,23 @@ def checkTransitivityWeighted(adj_list):
     
 #     return combinations
 
+def adjListToMatrix(adj_list):
+    """
+    Convert an adjacency list to an adjacency matrix.
+
+    Input: adj_list. The adjacency list representing the graph.
+
+    Output: The adjacency matrix representing the graph.
+    """
+    n = len(adj_list)
+    adj_matrix = np.full((n, n), -1)  # Initialize with -1 for uncertain edges
+
+    for i, neighbors in enumerate(adj_list):
+        for neighbor, weight in neighbors:
+            adj_matrix[i][neighbor] = weight
+
+    return adj_matrix
+
 def detect_conflicts(adj_list):
     """
     Detect conflicts in the adjacency list.
@@ -279,27 +275,79 @@ def generateGraphsWithTransitivity(adj_list):
     dfs(copy.deepcopy(adj_list), uncertain_edges, 0)
     return all_graphs
 
-# Example graph
-# adj_list = [
-#     [[0, 1],[1, -1], [2, 1], [3, 0]],
-#     [[0, -1], [1, 1],[2, -1], [3, 0]],
-#     [[0, 1], [1, -1],[2, 1], [3, 0]],
-#     [[0, 0], [1, 0], [2, 0], [3, 1]]
-# ]
 
-adj_list = createAdjList(np.array([
+def GraphProperty(all_lists):
+    """
+    Generate a dataframe of all graphs and their properties, including number of clusters (connected components), and get an ID for each graph.
+
+    Parameters:
+    all_lists (list): A list of adjacency lists representing the graphs.
+
+    Returns:
+    pd.DataFrame: A DataFrame containing the graph properties.
+    """
+    graph_properties = []
+
+    for idx, adj_list in enumerate(all_lists):
+        # Create a graph from the adjacency list
+        matrix0 = adjListToMatrix(adj_list)
+        G = nx.from_numpy_array(matrix0)
+        
+        # Calculate the number of clusters (connected components)
+        num_clusters = nx.number_connected_components(G)
+        
+        # Append the graph properties to the list
+        graph_properties.append({
+            'GraphID': idx,
+            'NumClusters': num_clusters
+        })
+    
+    # Create a DataFrame from the graph properties
+    df = pd.DataFrame(graph_properties)
+    return df
+
+def JaalDataPrepareNode(G):
+    node_G = G.nodes()
+    node_G_df = pd.DataFrame(list(G.nodes(data=True)))
+
+    node_G_df.rename(columns={0: 'id'}, inplace=True)
+    node_G_df['id'] = node_G_df['id'].astype(str)
+    node_G_df['title'] = 'Node' + node_G_df['id']
+    node_G_df = node_G_df[['id', 'title']]
+    return node_G_df
+
+def JaalDataPrepareEdge(G):
+    edge_G = G.edges()
+    edge_G_df = pd.DataFrame(list(G.edges(data=True)))
+
+    edge_G_df.rename(columns={0: 'from', 1: 'to', 2: 'weight'}, inplace=True)
+    edge_G_df['from'] = edge_G_df['from'].astype(str)
+    edge_G_df['to'] = edge_G_df['to'].astype(str)
+    edge_G_df['weight'] = edge_G_df['weight'].apply(lambda x: x['weight'])
+
+    # get rid of self-loop
+    edge_G_df = edge_G_df[edge_G_df['from'] != edge_G_df['to']]
+    return edge_G_df
+
+def JaalPlot(node_df, edge_df):
+    return Jaal(edge_df, node_df).plot()
+
+
+
+tmp = np.array([
     [1, 1, 1, -1, -1, 0],
     [1, 1, 1, -1, -1, 0],
     [1, 1, 1, -1, -1, 0],
     [-1, -1, -1, 1, 1, -1],
     [-1, -1, -1, 1, 1, -1],
-    [0, 0, 0, -1, -1, 1]]))
-# Generate all valid graphs
-result = generateGraphsWithTransitivity(adj_list)
-print(f"Number of valid graphs: {len(result)}")
+    [0, 0, 0, -1, -1, 1]])    
+tmplist = createAdjList(tmp)
+all_graphs = generateGraphsWithTransitivity(tmplist)
+df = GraphProperty(all_graphs)
 
-# x = createAdjList(exampleNoConnections)
-# print(x)
-# # print("Adjacency List: \n" + str(x))
+graph1 = adjListToMatrix(all_graphs[0])
+graph1_node = JaalDataPrepareNode(nx.from_numpy_array(graph1))
+graph1_edge = JaalDataPrepareEdge(nx.from_numpy_array(graph1))
+JaalPlot(graph1_node, graph1_edge)
 
-# y = genCombos(x)
+
