@@ -1,5 +1,5 @@
 # CSE583_final_project
-<<<<<<< HEAD
+
 
 # Task 1: Create a simulation adjacency matrix (Courtney)
 
