@@ -2,15 +2,32 @@
 
 # import packages
 import copy
-import itertools
 import numpy as np
 import pandas as pd
 import networkx as nx
 from jaal import Jaal
+from dash import html
 
+def checkInput(adj_matrix):
+    """
+    Input: n x n square matrix
+    Output: Bool: True if input is valid, False otherwise
+    """
+    # Check if input is a square matrix
+    if len(adj_matrix) != len(adj_matrix[0]):
+        raise ValueError("Input matrix must be square!")
+
+    # Check if input is a binary matrix
+    for row in adj_matrix:
+        for value in row:
+            if value not in [-1, 0, 1]:
+                raise ValueError("Input matrix must be numeric (-1,0,1)!")
+
+    return True
 
 def createAdjList(adj_matrix):
     """
+    Create an adjacency list from an adjacency matrix.
     Input: n x n square matrix
     Output: Adjacency List (linked list) with edge weights
     """
@@ -39,8 +56,10 @@ def createAdjList(adj_matrix):
 
     return adj_list
 
+# helper function
 def sumWeights(node):
     """
+    Calculate the sum of weights connected to a node.
     Input: List of length n (where n is number of nodes in the graph), each element is a list of length 2 (node, weight)
     Output: Int, sum of weights connected to node
     """
@@ -54,6 +73,7 @@ def sumWeights(node):
 
 def checkSymmetric(adj_list):
     """
+    Check if the graph is symmetric.
     Input: Adjacency list
     Output: Bool: True if symmetric False otherwise
     """
@@ -62,11 +82,12 @@ def checkSymmetric(adj_list):
             # Check if the reciprocal connection exists using zip
             reciprocal_connections = adj_list[neighbor]
             if not any((conn == node and w == weight) for conn, w in reciprocal_connections):
-                return False
+                raise ValueError("Graph is not symmetric!")
     return True
 
 def checkTransitivityWeighted(adj_list):
     """
+    Check if the graph is transitive. 
     Input: Adjacency list with edge weights 0 or 1 (NO UNCERTAINTY!)
     Output: Bool. True if matrix is transitive, false otherwise
     """
@@ -102,57 +123,11 @@ def checkTransitivityWeighted(adj_list):
             #     continue
     return True
 
-# Jiangyue modified this function, see below
-
-# def genCombos(adj_list):
-#     """
-#     Input: Adjacency list with uncertainty (can handle lists with no uncertainty but why are you calling this function on that?)
-#     Output: List of adjacency lists. All possible transitive and symmetric adjacency lists from the input list
-#     """
-#     # identify all uncertain edges
-#     uncertain_edges = []
-    
-#     # for each node in the list
-#     for idx, connections in enumerate(adj_list):
-#         # for each connection of each node
-#         for idc, friend in enumerate(connections):
-#             # if the connection is uncertain, track which parent node and which child node is uncertain
-#             if friend[1] == -1:
-#                 uncertain_edges.append((idx, idc))
-#                 # returns list of tuple where the 0th element is the node and the 1st element is the connection which is uncertain
-
-#     # Generate 2^n possible combinations
-#     n = len(uncertain_edges)
-
-#     # if there is no uncertainty
-#     if n == 0:
-#         return adj_list
-
-#     # generates all 2^n possible replacement combinations
-#     # creates a list of len 2^n. Each element is an n-tuple of 0s and 1s
-#     replacement_options = list(itertools.product([0, 1], repeat=n))
-
-#     combinations = []
-#     for idx, replacement in enumerate(replacement_options):
-#         # replacement is a 4-tuple containing 0 or 1. The ith element of replacement corresponds to the ith tuple of uncertain_edges
-#         # temp_adjList = [list(node) for node in adj_list] # creates a copy of the original adj_list. Builds it in this manner bc of how python memory handles lists
-#         temp_adjList = copy.deepcopy(adj_list)
-#         for (idn, idc), replace in zip(uncertain_edges, replacement):
-#             # idn: node id
-#             # idc: connection id
-#             # [1]: weight location
-#             temp_adjList[idn][idc][1] = replace
-#         if checkTransitivityWeighted(temp_adjList) and checkSymmetric(temp_adjList):
-#             combinations.append(temp_adjList)
-    
-#     return combinations
 
 def adjListToMatrix(adj_list):
     """
     Convert an adjacency list to an adjacency matrix.
-
     Input: adj_list. The adjacency list representing the graph.
-
     Output: The adjacency matrix representing the graph.
     """
     n = len(adj_list)
@@ -192,12 +167,22 @@ def detect_conflicts(adj_list):
 
 
 
-
+# helper function
 def strictTransitiveClosure(adj_matrix):
+    """
+    Compute the strict transitive closure of an adjacency matrix.
+    Input: adj_matrix. The adjacency matrix representing the graph.
+    Output: The strict transitive closure of the graph.
+    """
     n = len(adj_matrix) # Number of vertices
     
     def updateTransitiveEdges(n, adj_matrix):  
-        
+        """
+        Update the adjacency matrix with transitive edges.
+        Input: n. Number of vertices
+               adj_matrix. The adjacency matrix representing the graph.
+        Output: The adjacency matrix with transitive edges.
+        """
         for i in range(n):
             for j in range(n):
                 if adj_matrix[i][j] == 1:  # If there's a positive connection
@@ -216,9 +201,20 @@ def strictTransitiveClosure(adj_matrix):
 
 
 def generateGraphsWithTransitivity(adj_list):
-    
+    """
+    Generate all possible graphs with transitivity from an adjacency list.
+    Input: adj_list. The adjacency list representing the graph.
+    Output: A list of all possible graphs with transitivity.
+    """
     all_graphs = []
     def dfs(current_graph, uncertain_edges, index):
+        """
+        Perform depth-first search to generate all possible graphs.
+        Input: current_graph. The current graph being processed.
+               uncertain_edges. The list of uncertain edges.
+               index. The index of the current uncertain edge.
+        Output: None
+        """
         # Base case: All uncertain edges processed
         if index == len(uncertain_edges):
             all_graphs.append(copy.deepcopy(current_graph))  # Store the graph copy
@@ -242,7 +238,14 @@ def generateGraphsWithTransitivity(adj_list):
                 updateEdge(current_graph, i, j, -1)
     
     def updateEdge(graph, u, v, weight):
-        # Update the edge (u, v) and its reciprocal (v, u)
+        """
+        Update the edge (u, v) and its reciprocal (v, u) with the given weight.
+        Input: graph. The graph to update.
+               u, v. The vertices of the edge.
+               weight. The weight to assign to the edge.
+        Output: None
+        """
+        
         for idx, (neighbor, _) in enumerate(graph[u]):
             if neighbor == v:
                 graph[u][idx][1] = weight
@@ -251,6 +254,11 @@ def generateGraphsWithTransitivity(adj_list):
                 graph[v][idx][1] = weight
 
     def enforceTransitivity(graph):
+        """
+        Check if the graph is transitive.
+        Input: graph. The graph to check for transitivity.
+        Output: True if the graph is transitive, False otherwise.
+        """
         n = len(graph)
         for i in range(n):
             for j, weight_ij in graph[i]:
@@ -280,11 +288,9 @@ def GraphProperty(all_lists):
     """
     Generate a dataframe of all graphs and their properties, including number of clusters (connected components), and get an ID for each graph.
 
-    Parameters:
-    all_lists (list): A list of adjacency lists representing the graphs.
+    Input: A list of adjacency lists representing the graphs.
 
-    Returns:
-    pd.DataFrame: A DataFrame containing the graph properties.
+    Returns: A DataFrame containing the graph properties.
     """
     graph_properties = []
 
@@ -307,6 +313,11 @@ def GraphProperty(all_lists):
     return df
 
 def JaalDataPrepareNode(G):
+    """
+    Prepare node data for Jaal plotting.
+    Input: G. The graph to prepare node data for.
+    Output: A DataFrame containing the node data.
+    """
     node_G = G.nodes()
     node_G_df = pd.DataFrame(list(G.nodes(data=True)))
 
@@ -317,6 +328,11 @@ def JaalDataPrepareNode(G):
     return node_G_df
 
 def JaalDataPrepareEdge(G):
+    """
+    Prepare edge data for Jaal plotting.
+    Input: G. The graph to prepare edge data for.
+    Output: A DataFrame containing the edge data.
+    """
     edge_G = G.edges()
     edge_G_df = pd.DataFrame(list(G.edges(data=True)))
 
@@ -330,24 +346,30 @@ def JaalDataPrepareEdge(G):
     return edge_G_df
 
 def JaalPlot(node_df, edge_df):
+    """
+    Plot the graph using Jaal.
+    Input: node_df. The DataFrame containing the node data.
+           edge_df. The DataFrame containing the edge data.
+    Output: None. Will display the interactive graph plot.
+    """
     return Jaal(edge_df, node_df).plot()
 
 
 
-tmp = np.array([
-    [1, 1, 1, -1, -1, 0],
-    [1, 1, 1, -1, -1, 0],
-    [1, 1, 1, -1, -1, 0],
-    [-1, -1, -1, 1, 1, -1],
-    [-1, -1, -1, 1, 1, -1],
-    [0, 0, 0, -1, -1, 1]])    
-tmplist = createAdjList(tmp)
-all_graphs = generateGraphsWithTransitivity(tmplist)
-df = GraphProperty(all_graphs)
+# tmp = np.array([
+#     [1, 1, 1, -1, -1, 0],
+#     [1, 1, 1, -1, -1, 0],
+#     [1, 1, 1, -1, -1, 0],
+#     [-1, -1, -1, 1, 1, -1],
+#     [-1, -1, -1, 1, 1, -1],
+#     [0, 0, 0, -1, -1, 1]])    
+# tmplist = createAdjList(tmp)
+# all_graphs = generateGraphsWithTransitivity(tmplist)
+# df = GraphProperty(all_graphs)
 
-graph1 = adjListToMatrix(all_graphs[0])
-graph1_node = JaalDataPrepareNode(nx.from_numpy_array(graph1))
-graph1_edge = JaalDataPrepareEdge(nx.from_numpy_array(graph1))
-JaalPlot(graph1_node, graph1_edge)
+# graph1 = adjListToMatrix(all_graphs[0])
+# graph1_node = JaalDataPrepareNode(nx.from_numpy_array(graph1))
+# graph1_edge = JaalDataPrepareEdge(nx.from_numpy_array(graph1))
+# JaalPlot(graph1_node, graph1_edge)
 
 
