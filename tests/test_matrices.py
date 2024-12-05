@@ -1,6 +1,6 @@
 # import packages
 import numpy as np
-from experimental import matrices
+from LeOpardLink import matrices
 import pytest
 # generate an example matrix with uncertainty
 example_non_symmetric = np.array([

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel", "setuptools_scm>=8.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "LeOpardLink"
+version = "0.1.0"
+authors = [
+  {name="Courtney Allen", email="ckallen@uw.edu"},
+  {name="Ziqi Guo", email="guoziqi@uw.edu"},
+  {name="Guy Bennevat Haninovich", email="guybh@uw.edu"},
+  {name="Jiangyue Wang", email="jyuewang@uw.edu"}
+]
+description = "A package to generate all possible graphs for wildlife individual identification, and visualize them"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+	"numpy",
+    "pandas",
+    "networkx",
+    "jaal>=0.1.7"
+] 
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools_scm]
+
+[project.urls]
+Homepage = "https://github.com/guoziqi1275/LeOpardLink"
+Issues = "https://github.com/guoziqi1275/LeOpardLink/issues"
+
+
