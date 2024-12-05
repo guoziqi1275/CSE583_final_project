@@ -2,7 +2,7 @@ jaal==0.1.7
 matplotlib==3.9.2
 networkx==3.4.2
 numpy==1.22.0
-pandas==1.4.0s
+pandas==1.4.0
 plotly==5.24.1
 pylint==3.3.1
 pytest==8.3.3
