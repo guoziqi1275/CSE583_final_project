@@ -74,6 +74,8 @@ Based on this figure, there are 7 individuals.
 ```python
 import numpy as np
 from LeOpardLink import matrices
+import networkx as nx
+
 
 # Example adjacency matrix
 example_matrix = matrices.simulationMatrix()
@@ -97,7 +99,7 @@ all_graphs = matrices.generateGraphsWithTransitivity(adj_list)
 graph_properties = matrices.GraphProperty(all_graphs)
 
 # Plot the graph using Jaal
-G = nx.from_numpy_array(allgraphs[0])
+G = nx.from_numpy_array(matrices.adjListToMatrix(all_graphs[0]))
 node_df = matrices.JaalDataPrepareNode(G)
 edge_df = matrices.JaalDataPrepareEdge(G)
 matrices.JaalPlot(node_df, edge_df)
