@@ -11,10 +11,10 @@ While this package was motivated for the use of wildlife camera trap images, it 
 
 ## Installation
 
-To install the package, download our repo first. Under the repo directory, use the following command:
+To install the package from PyPI:
 
 ```sh
-pip install -e .
+pip install LeOpardLink
 ```
 ## Dependencies
 The package requires the following dependencies:
