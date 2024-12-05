@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: LeOpardLink
+Version: 0.1.0
+Summary: A package to generate all possible graphs for wildlife individual identification, and visualize them
+Author-email: Courtney Allen <ckallen@uw.edu>, Ziqi Guo <guoziqi@uw.edu>, Guy Bennevat Haninovich <guybh@uw.edu>, Jiangyue Wang <jyuewang@uw.edu>
+Project-URL: Homepage, https://github.com/guoziqi1275/LeOpardLink
+Project-URL: Issues, https://github.com/guoziqi1275/LeOpardLink/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: networkx
+Requires-Dist: jaal>=0.1.7
+
+# CSE583_final_project
+<<<<<<< HEAD
+
+# Task 1: Create a simulation adjacency matrix (Courtney)
+
+I have committed a .py script to our Github that creates a 21x21 matrix representing 21 nodes. 
+All possible edges (is that the right term?) are represented by 0s (no known connection) or 1s (known connection).
+In this matrix there are no 'maybes'. We'll add those later. There should be 6 identifiable individuals from this matrix. 
+
+!["simulation matrix goal"](./images/cse-583-project-simulation-matrix-drawing-1.jpg)
+
+
+

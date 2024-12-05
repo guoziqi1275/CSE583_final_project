@@ -1,0 +1,6 @@
+{
+    "python.analysis.inlayHints.pytestParameters": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.defaultInterpreterPath": "/Users/lilywang/miniconda3/envs/myenv/bin/python",
+    "python.REPL.enableREPLSmartSend": false
+}
