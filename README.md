@@ -1,7 +1,9 @@
 # LeOpardLink
+[![Python package](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package.yml)
+
+[![Python application](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml)
 
 **Welcome to LeOpard Link (LOL)**
-[![Python application](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml)
 
 !["LOL logo"](./images/design/LOL-logo-color.png)
 

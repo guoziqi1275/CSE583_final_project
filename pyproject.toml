@@ -18,7 +18,7 @@ dependencies = [
 	"numpy",
     "pandas",
     "networkx",
-    "jaal>=0.1.7"
+    "jaal"
 ] 
 classifiers = [
     "Programming Language :: Python :: 3",

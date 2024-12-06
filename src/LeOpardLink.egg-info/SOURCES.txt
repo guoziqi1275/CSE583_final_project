@@ -11,6 +11,8 @@ LeOpardLink/matrices.py
 LeOpardLink/__pycache__/__init__.cpython-312.pyc
 LeOpardLink/__pycache__/matrices.cpython-312.pyc
 data/real_leopard_matrix.csv
+dist/LeOpardLink-0.1.0-py3-none-any.whl
+dist/leopardlink-0.1.0.tar.gz
 doc/Design_components.md
 doc/Design_functional-specification.md
 doc/authentication.md

@@ -1,4 +1,4 @@
-jaal>=0.1.7
+jaal
 matplotlib
 networkx
 numpy
