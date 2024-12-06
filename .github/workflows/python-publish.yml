@@ -30,6 +30,12 @@ jobs:
         run: |
           rm -rf dist/ build/
           
+      - name: Set version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}  # This strips the "v" prefix
+          echo "Version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV  # Save it to an environment variable for later use
+    
       - name: Build release distributions
         run: |
           # NOTE: put your own distribution build steps here.
@@ -59,7 +65,7 @@ jobs:
       #
       # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
       # ALTERNATIVE: exactly, uncomment the following line instead:
-      url: https://pypi.org/project/LeOpardLink/${{ github.event.release.name }}
+      url: https://pypi.org/project/LeOpardLink/${{ env.VERSION }}
 
     steps:
       - name: Retrieve release distributions
