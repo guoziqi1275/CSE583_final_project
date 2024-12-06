@@ -3,9 +3,9 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - numpy=2.1.2=py312he4d506f_0
-  - pandas=2.2.3=py312h98e817e_1
-  - yaml=0.2.5=h0d85af4_2
+  - numpy
+  - pandas
+  - yaml
   - pip:
-      - jaal==0.1.7
-      - networkx==3.4.2
+      - jaal
+      - networkx
