@@ -15,7 +15,7 @@
 		- Function 2: Are there any conflicts in the matrix?
 		- Function 5: check transitivity
 
-- Component 3: Plot current graph (treat 2 as 0 if there's still 2s in the matrix) Input: matrix from component 2. Output: an interactive network plot.
+- Component 3: Plot current graph. Input: matrix from component 2. Output: an interactive network plot.
 	- Function 3: call Jaal
 
 - Component 4: Generate all possible graphs. Input: matrix from component 2. Output: a list of all possible graph adjacency lists; a dataframe for graph features.
@@ -61,9 +61,9 @@
 
 # Plan
 
- 1. All functions needed (try to improve complexity, now we have O(2^(n^2))...) - Week 10
+ 1. [Done!] All functions needed (try to improve complexity, now we have O(2^(n^2))...) - Week 10
  2. Connect our package to streamlit - Week 10
- 3. Make our package downloadable/installable via github, pip, or conda - Week 11
+ 3. [Done (waiting for conda-forge review)] Make our package downloadable/installable via github, pip, or conda - Week 11
  4. Fully connect our package to streamlit webapp - Week 11
  5. Full documentation of function usage, tutorial, citations, environments - Week 12 before ddl 
 
