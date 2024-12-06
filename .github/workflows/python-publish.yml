@@ -26,16 +26,14 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Clear cache
+        run: |
+          rm -rf ~/.cache/
+     
       - name: Clean build folder
         run: |
           rm -rf dist/ build/
-          
-      - name: Set version
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}  # This strips the "v" prefix
-          echo "Version: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV  # Save it to an environment variable for later use
-    
+            
       - name: Build release distributions
         run: |
           # NOTE: put your own distribution build steps here.
@@ -65,7 +63,8 @@ jobs:
       #
       # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
       # ALTERNATIVE: exactly, uncomment the following line instead:
-      url: https://pypi.org/project/LeOpardLink/${{ env.VERSION }}
+      url: https://pypi.org/project/LeOpardLink/${{ github.event.release.tag_name | replace('v', '') }}
+
 
     steps:
       - name: Retrieve release distributions
