@@ -1,5 +1,5 @@
 # LeOpardLink
-[![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
+[![Pylint](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/pylint.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/pylint.yml)
 [![Python package](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package.yml)
 [![Python application](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml)
 [![Python Package using Conda](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package-conda.yml)
@@ -83,28 +83,28 @@ import networkx as nx
 
 
 # Example adjacency matrix
-example_matrix = matrices.simulationMatrix()
+example_matrix = matrices.simulation_matrix()
 
 # Check input
-matrices.checkInput(example_matrix)
+matrices.check_input(example_matrix)
 
 # Create adjacency list
-adj_list = matrices.createAdjList(example_matrix)
+adj_list = matrices.create_adjlist(example_matrix)
 
 # Check symmetry
-matrices.checkSymmetric(adj_list)
+matrices.check_symmetric(adj_list)
 
 # Generate graphs with transitivity
-all_graphs = matrices.generateGraphsWithTransitivity(adj_list)
+all_graphs = matrices.generate_graphs_with_transitivity(adj_list)
 
 # Get graph properties
-graph_properties = matrices.GraphProperty(all_graphs)
+graph_properties = matrices.graph_property(all_graphs)
 
 # Plot the graph using Jaal
-G = nx.from_numpy_array(matrices.adjListToMatrix(all_graphs[0]))
-node_df = matrices.JaalDataPrepareNode(G)
-edge_df = matrices.JaalDataPrepareEdge(G)
-matrices.JaalPlot(node_df, edge_df)
+G = nx.from_numpy_array(matrices.adjlist2matrix(all_graphs[0]))
+node_df = matrices.jaal_data_prepare_node(G)
+edge_df = matrices.jaal_data_prepare_edge(G)
+matrices.jaal_plot(node_df, edge_df)
 ```
 ## Try your own data!
 
