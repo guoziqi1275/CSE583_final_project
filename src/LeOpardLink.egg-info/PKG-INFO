@@ -21,6 +21,8 @@ Requires-Dist: jaal
 
 [![Python application](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml)
 
+[![Upload Python Package](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-publish.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-publish.yml)
+
 **Welcome to LeOpard Link (LOL)**
 
 !["LOL logo"](./images/design/LOL-logo-color.png)
@@ -121,6 +123,9 @@ node_df = matrices.JaalDataPrepareNode(G)
 edge_df = matrices.JaalDataPrepareEdge(G)
 matrices.JaalPlot(node_df, edge_df)
 ```
+## Try your own data!
+
+See [this script](scripts_example/leopard.py) for a real world data usage.
 
 ## Contributing
 Contributions are welcome! Please see the [issues](https://github.com/guoziqi1275/LeOpardLink/issues) page for ways you can help.

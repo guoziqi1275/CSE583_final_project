@@ -9,8 +9,6 @@ requirements.txt
 .github/workflows/python-publish.yml
 .vscode/settings.json
 data/real_leopard_matrix.csv
-dist/LeOpardLink-0.1.0-py3-none-any.whl
-dist/leopardlink-0.1.0.tar.gz
 doc/Design_components.md
 doc/Design_functional-specification.md
 doc/authentication.md
@@ -26,6 +24,7 @@ images/design/LOLcroped.png
 images/design/dot.png
 images/design/login.png
 images/design/new_account.png
+scripts_example/leopard.py
 src/tech-review_Jaal.ipynb
 src/write-real-leopard-matrix.ipynb
 src/LeOpardLink/__init__.py

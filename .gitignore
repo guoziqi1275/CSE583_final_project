@@ -1,7 +1,3 @@
 LeopardDetections_PicturesOnly/
 *.DS_Store
 .DS_Store
-# Ignore Python build artifacts
-build/
-dist/
-*.egg-info/
