@@ -59,11 +59,8 @@ jobs:
     environment:
       name: pypi
       # OPTIONAL: uncomment and update to include your PyPI project URL in the deployment status:
-      # url: https://pypi.org/project/LeOpardLink
-      #
-      # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
-      # ALTERNATIVE: exactly, uncomment the following line instead:
-      url: https://pypi.org/project/LeOpardLink/${{ github.event.release.tag_name | replace('v', '') }}
+      url: https://pypi.org/project/LeOpardLink
+      
 
 
     steps:
