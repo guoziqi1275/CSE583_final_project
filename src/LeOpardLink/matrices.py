@@ -311,6 +311,37 @@ def GraphProperty(all_lists):
     df = pd.DataFrame(graph_properties)
     return df
 
+def getGraphIDwithMaxClusters(df):
+    """
+    Get the graph ID with the maximum number of clusters.
+
+    Input: A DataFrame containing the graph properties.
+
+    Returns: The graph ID with the maximum number of clusters.
+    """
+    return df['GraphID'][df['NumClusters'].idxmax()]
+
+def getGraphIDwithMinClusters(df):
+    """
+    Get the graph ID with the minimum number of clusters.
+
+    Input: A DataFrame containing the graph properties.
+
+    Returns: The graph ID with the minimum number of clusters.
+    """
+    return df['GraphID'][df['NumClusters'].idxmin()]
+
+def Summary(df):
+    """
+    Generate a summary of the graph properties.
+
+    Input: A DataFrame containing the graph properties.
+
+    Returns: A summary of the graph properties.
+    """
+    return df['NumClusters'].describe()
+
+
 def JaalDataPrepareNode(G):
     """
     Prepare node data for Jaal plotting.

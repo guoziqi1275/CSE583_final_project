@@ -91,9 +91,6 @@ adj_list = matrices.createAdjList(example_matrix)
 # Check symmetry
 matrices.checkSymmetric(adj_list)
 
-# Check transitivity
-is_transitive = matrices.checkTransitivityWeighted(adj_list)
-
 # Generate graphs with transitivity
 all_graphs = matrices.generateGraphsWithTransitivity(adj_list)
 
@@ -106,6 +103,9 @@ node_df = matrices.JaalDataPrepareNode(G)
 edge_df = matrices.JaalDataPrepareEdge(G)
 matrices.JaalPlot(node_df, edge_df)
 ```
+## Try your own data!
+
+See [this script](scripts_example/leopard.py) for a real world data usage.
 
 ## Contributing
 Contributions are welcome! Please see the [issues](https://github.com/guoziqi1275/LeOpardLink/issues) page for ways you can help.
@@ -133,3 +133,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - Wrote tests
 - Wrote documentation
 - Set up packaging
+- Set up continuous integration via GitHub Actions

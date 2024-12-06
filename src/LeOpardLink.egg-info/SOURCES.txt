@@ -5,11 +5,9 @@ README.md
 pyproject.toml
 requirements.txt
 .github/workflows/python-app.yml
+.github/workflows/python-package.yml
+.github/workflows/python-publish.yml
 .vscode/settings.json
-LeOpardLink/__init__.py
-LeOpardLink/matrices.py
-LeOpardLink/__pycache__/__init__.cpython-312.pyc
-LeOpardLink/__pycache__/matrices.cpython-312.pyc
 data/real_leopard_matrix.csv
 dist/LeOpardLink-0.1.0-py3-none-any.whl
 dist/leopardlink-0.1.0.tar.gz
@@ -28,7 +26,6 @@ images/design/LOLcroped.png
 images/design/dot.png
 images/design/login.png
 images/design/new_account.png
-scripts/Graph.png
 src/tech-review_Jaal.ipynb
 src/write-real-leopard-matrix.ipynb
 src/LeOpardLink/__init__.py

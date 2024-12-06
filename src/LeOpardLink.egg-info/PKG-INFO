@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: LeOpardLink
-Version: 0.1.0
+Version: 0.1.1
 Summary: A package to generate all possible graphs for wildlife individual identification, and visualize them
 Author-email: Courtney Allen <ckallen@uw.edu>, Ziqi Guo <guoziqi@uw.edu>, Guy Bennevat Haninovich <guybh@uw.edu>, Jiangyue Wang <jyuewang@uw.edu>
 Project-URL: Homepage, https://github.com/guoziqi1275/LeOpardLink
@@ -109,9 +109,6 @@ adj_list = matrices.createAdjList(example_matrix)
 # Check symmetry
 matrices.checkSymmetric(adj_list)
 
-# Check transitivity
-is_transitive = matrices.checkTransitivityWeighted(adj_list)
-
 # Generate graphs with transitivity
 all_graphs = matrices.generateGraphsWithTransitivity(adj_list)
 
@@ -151,3 +148,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - Wrote tests
 - Wrote documentation
 - Set up packaging
+- Set up continuous integration via GitHub Actions
