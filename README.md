@@ -127,7 +127,10 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 [Guy Bennevat Haninovich](guybh@uw.edu)
 
-- PLEASE WRITE YOUR CONTRIBUTIONS HERE
+- Coded python functions
+- Wrote test cases
+- Code review
+- Wrote use cases
 
 [Jiangyue Wang](jyuewang@uw.edu)
 
