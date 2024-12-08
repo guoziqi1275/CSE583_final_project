@@ -130,7 +130,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 [Ziqi Guo](guoziqi@uw.edu)
 
-- PLEASE WRITE YOUR CONTRIBUTIONS HERE
+- User interface design
+- Streamlit set up
+- UI technology review
 
 [Guy Bennevat Haninovich](guybh@uw.edu)
 
