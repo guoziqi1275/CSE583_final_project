@@ -126,7 +126,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 [Courtney Allen](ckallen@uw.edu)
 
-- PLEASE WRITE YOUR CONTRIBUTIONS HERE
+- Wrote documentation
+- Example data set up
 
 [Ziqi Guo](guoziqi@uw.edu)
 
@@ -148,3 +149,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - Wrote documentation
 - Set up packaging
 - Set up continuous integration via GitHub Actions
+- UI implementation
