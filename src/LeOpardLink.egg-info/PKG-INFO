@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: LeOpardLink
-Version: 0.1.2
+Version: 0.1.3.1
 Summary: A package to generate all possible graphs for wildlife individual identification, and visualize them
 Author-email: Courtney Allen <ckallen@uw.edu>, Ziqi Guo <guoziqi@uw.edu>, Guy Bennevat Haninovich <guybh@uw.edu>, Jiangyue Wang <jyuewang@uw.edu>
 Project-URL: Homepage, https://github.com/guoziqi1275/LeOpardLink
@@ -59,33 +59,39 @@ The package requires the following dependencies:
 
 ## Functions
 
-- `checkInput`: Check if the input adjacency matrix is valid. The identification matrix should only contain 3 numeric values: 1 (two detections are the same individual), 0 (two detections are not the same individual), -1 (uncertain relationship between the two detections) .
+- `check_input`: Check if the input adjacency matrix is valid. The identification matrix should only contain 3 numeric values: 1 (two detections are the same individual), 0 (two detections are not the same individual), -1 (uncertain relationship between the two detections) .
 
-- `createAdjList`: Create an adjacency list from an adjacency matrix. Adjcency list and matrix are two different ways to store graph information.
+- `create_adjlist`: Create an adjacency list from an adjacency matrix. Adjcency list and matrix are two different ways to store graph information.
 
-- `adjListToMatrix`: Convert an adjacency list to an adjacency matrix.
+- `adjlist2matrix`: Convert an adjacency list to an adjacency matrix.
 
-- `sumWeights`: Calculate the sum of weights connected to a node.
+- `sum_weights`: Calculate the sum of weights connected to a node.
 
-- `checkSymmetric`:  Check if the graph is symmetric.
+- `check_symmetric`:  Check if the graph is symmetric.
 
-- `checkTransitivityWeighted`: Check if the graph is transitive.
+- `check_transitivity_weighted`: Check if the graph is transitive.
 
 - `detect_conflicts`: Detect conflicts in the adjacency list.
 
-- `strictTransitiveClosure`: Compute the strict transitive closure of an adjacency matrix.
+- `strict_transitive_closure`: Compute the strict transitive closure of an adjacency matrix.
 
-- `generateGraphsWithTransitivity`: Generate all possible graphs with transitivity from an adjacency list.
+- `generate_graphs_with_transitivity`: Generate all possible graphs with transitivity from an adjacency list.
 
-- `GraphProperty`: Generate a dataframe of all graphs and their properties, including the number of clusters (connected nodes).
+- `graph_property`: Generate a dataframe of all graphs and their properties, including the number of clusters (connected nodes).
 
-- `JaalDataPrepareNode`: Prepare node data for Jaal plotting.
+- `get_graph_id_with_max_clusters`: Get the graph ID with the maximum number of clusters.
 
-- `JaalDataPrepareEdge`: Prepare edge data for Jaal plotting.
+- `get_graph_id_with_min_clusters`: Get the graph ID with the minimum number of clusters.
 
-- `JaalPlot`: Plot the graph using Jaal.
+- `summary`: Generate a summary of the graph properties.
 
-- `simulationMatrix`: Generate a simulation adjacency matrix.
+- `jaal_data_prepare_node`: Prepare node data for Jaal plotting.
+
+- `jaal_data_prepare_edge`: Prepare edge data for Jaal plotting.
+
+- `jaal_plot`: Plot the graph using Jaal.
+
+- `simulation_matrix`: Generate a simulation adjacency matrix.
 
 ## How does it work?
 
@@ -142,7 +148,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 [Ziqi Guo](guoziqi@uw.edu)
 
-- PLEASE WRITE YOUR CONTRIBUTIONS HERE
+- User interface design
+- Streamlit set up
+- UI technology review
 
 [Guy Bennevat Haninovich](guybh@uw.edu)
 

@@ -367,14 +367,14 @@ def jaal_data_prepare_edge(g):
     edge_g_df = edge_g_df[edge_g_df['from'] != edge_g_df['to']]
     return edge_g_df
 
-def jaal_plot(node_df, edge_df):
+def jaal_plot(node_df, edge_df, port):
     """
     Plot the graph using Jaal.
     Input: node_df. The DataFrame containing the node data.
            edge_df. The DataFrame containing the edge data.
     Output: None. Will display the interactive graph plot.
     """
-    return Jaal(edge_df, node_df).plot()
+    return Jaal(edge_df, node_df).plot(port=port)
 
 def simulation_matrix():
     """
@@ -403,3 +403,25 @@ def simulation_matrix():
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
                 [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]])
     return matrix0
+
+def random_uncertainties(matrix0, prop_uncertainty):
+    """
+    Generate random uncertainties in the adjacency matrix.
+    Input: matrix0. The adjacency matrix.
+           prop_uncertainty. The proportion of uncertain edges.
+    Output: The adjacency matrix with random uncertainties.
+    """
+    if prop_uncertainty < 0 or prop_uncertainty > 1:
+        raise ValueError("Proportion of uncertainty must be between 0 and 1!")
+    no_uncertainty = int(prop_uncertainty * len(matrix0) * (len(matrix0) - 1) / 2)
+    matrix = matrix0.copy()
+    # Generate random uncertainties
+    for i in range(no_uncertainty):
+        while True:
+            row = np.random.randint(0, len(matrix))
+            col = np.random.randint(0, len(matrix))
+            if row != col and matrix[row][col] != -1:
+                matrix[row][col] = -1
+                matrix[col][row] = -1
+                break
+    return matrix

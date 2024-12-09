@@ -1,176 +1,60 @@
+"""
+This is the main Streamlit app file.
+"""
 import streamlit as st
-import base64
 import pandas as pd
+import numpy as np
+import networkx as nx
+import threading
+import webbrowser
+import base64
+import time
+import socket
+from LeOpardLink import matrices
+
 #streamlit run /Users/guoziqi/CSE583/LeOpardLink/UI_Design/ui_code/ui_code.py
 
-# Add a title to your app
-st.title("Welcome to LeOpardLink!")
-
-# Add a text input field
-name = st.text_input("What's your name?")
-
-# Add a button
-if st.button("Greet Me"):
-    if name:
-        st.write(f"Hello, {name}! 🎉")
-    else:
-        st.write("Hello, Stranger! Please enter your name for a personalized greeting.")
-
-
-#https://docs.streamlit.io/develop/concepts/design/dataframes
-
-#link creation area
-st.title("Create your Link here")
-
-# Upload the CSV file
-uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
-
-#Leoparodlink function goes here
-#####
-def LeOpardLink(df):
-    """
-    Add LeOpardLink function and generating the plot.
-    The function should return a figure (fig) object.
-    """
-
-#Process the uploaded CSV
-if uploaded_file is not None:
-    # Read the CSV file into a Pandas DataFrame
-    df = pd.read_csv(uploaded_file)
-
-    # Display the DataFrame
-    st.write("### Uploaded DataFrame")
-    st.dataframe(df)
-
-    # Generate plot using the custom function
-    st.write("### Generated Plot")
+# Function to load and validate the CSV file
+def load_csv(file):
     try:
-        plot = process_and_plot_data(df)  # Call your custom function here
-        st.pyplot(plot)  # Display the plot in Streamlit
+        df = pd.read_csv(file, header = 0, index_col= 0)
+        return df
     except Exception as e:
-        st.error(f"An error occurred while generating the plot: {e}")
+        st.error(f"Error loading CSV file: {e}")
+        return None
 
-# Add custom CSS, button...
-custom_css = """
-<style>
-body {
-    background-color: #E1C9AD; /* brown */
-    color: #E1C9AD; /* Text color */
-    font-family: Arial, sans-serif;
-}
+# Function to plot the graph using Jaal and open it in a new browser tab
+def plot_graph(adj_matrix, port):
+    G = nx.from_numpy_array(adj_matrix)
+    node_df = matrices.jaal_data_prepare_node(G)
+    edge_df = matrices.jaal_data_prepare_edge(G)
+    edge_df['weight_vis'] = edge_df['weight'].astype(str)
+    # Start a new thread to open the Jaal plot in a new browser tab
+    def open_jaal_plot():
+        matrices.jaal_plot(node_df = node_df, edge_df = edge_df, port = port)
+    
+    thread = threading.Thread(target=open_jaal_plot)
+    time.sleep(0.5)
+    thread.start()
+    # Display the local host link in Streamlit
+    st.markdown("[Open Jaal Plot](http://localhost:" + str(port) + ")")
 
-h1 {
-    color: black; /* Welcome to LeOpardLink */
-    text-align: center;
-}
-
-div.stButton > button {
-    background-color: #4CAF50; /* Green button background */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-div.stButton > button:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-</style>
-"""
-
-# Inject CSS into the app
-st.markdown(custom_css, unsafe_allow_html=True)
-
-# App content
-st.button("Generate plot")
-
-
-
-
-# Add the CSS for the toggle switch
-switch_css = """
-<style>
-/* The switch container */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Hide default checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-/* Slider circle */
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-/* When checked */
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-</style>
-"""
-
-# Inject CSS into Streamlit
-st.markdown(switch_css, unsafe_allow_html=True)
-
-# Add the toggle switch HTML
-st.markdown(
-    """
-    <label class="switch">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
-    """,
-    unsafe_allow_html=True
-)
-
-# Streamlit interaction
-st.write("This is a static toggle switch.")
-
-#background
+# Function to find a free port
+def find_free_port(starting_port = 8050):
+    port = starting_port
+    while True:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            if s.connect_ex(("localhost", port)) != 0:
+                return port
+            port += 1
+# Background
 
 # Function to read the image and encode it as base64
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-# Path to your image
-image_path = "/Users/guoziqi/CSE583/LeOpardLink/images_design/dot.png"
+image_path = "images/design/dot_transp.png"
 
 # Encode the image as base64
 base64_image = get_base64_image(image_path)
@@ -184,7 +68,7 @@ background_css = f"""
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    color: white; /* Ensure text is readable */
+    color: brown; /* Ensure text is readable */
 }}
 
 .main-content {{
@@ -202,3 +86,163 @@ background_css = f"""
 
 # Inject the CSS and HTML into the Streamlit app
 st.markdown(background_css, unsafe_allow_html=True)
+
+# Title
+st.title("Welcome to LeOpardLink!")
+page_bg_img = '''
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("images/design/dot.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+[data-testid="stHeader"] {
+    background: rgba(0, 0, 0, 0);
+}
+</style>
+'''
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+st.image("images/design/LOL-logo-color.png", caption="LeOpardLink")
+
+# Add a text input field
+name = st.text_input("What's your name?")
+
+# Add a button
+if st.button("Greet Me"):
+    if name:
+        st.write(f"Hello, {name}! 🎉 Are you identifying animals?")
+    else:
+        st.write("Hello, Stranger! Please enter your name for a personalized greeting.")
+
+
+#https://docs.streamlit.io/develop/concepts/design/dataframes
+
+#link creation area
+st.title("Create your Link here")
+uploaded_file = st.file_uploader("Upload CSV file of adjacency matrix", type=["csv"])
+
+
+if uploaded_file is not None:
+    df = load_csv(uploaded_file)
+    if df is not None:
+        st.write("Adjacency Matrix:")
+        st.write(df)
+
+        # Convert DataFrame to numpy array
+        adj_matrix = df.to_numpy()
+
+        # Check input
+        if matrices.check_input(adj_matrix):
+            st.success("Valid adjacency matrix")
+
+            # Plot current graph
+            if st.button("Plot Current Graph"):
+                port = find_free_port()
+                plot_graph(adj_matrix, port)
+                
+
+            # Generate all possible graphs
+            if st.button("Generate All Possible Graphs"):
+                adj_list = matrices.create_adjlist(adj_matrix)
+                all_graphs = matrices.generate_graphs_with_transitivity(adj_list)
+                st.session_state.all_graphs = all_graphs  # Store all graphs in session state
+                st.session_state.graph_properties = matrices.graph_property(all_graphs)
+                graph_properties = matrices.graph_property(all_graphs)
+                st.write("Generated all possible graphs")
+                st.write(graph_properties)
+
+            # Plot specific graph
+            graph_id = st.text_input("Enter Graph ID to Plot")
+            if st.button("Plot Specific Graph"):
+                if 'all_graphs' in st.session_state:
+                    all_graphs = st.session_state.all_graphs
+                    if graph_id.isdigit():
+                        graph_id = int(graph_id)
+                        if 0 <= graph_id < len(all_graphs):
+                            specific_graph = all_graphs[graph_id]
+                            specific_matrix = matrices.adjlist2matrix(specific_graph)
+                            
+                            port = find_free_port()
+                            st.write("Using port: ", port)
+                            plot_graph(specific_matrix, port)
+                           
+                            # Convert the specific matrix to a DataFrame for download
+                            specific_df = pd.DataFrame(specific_matrix)
+                            
+                            # Create a CSV download button
+                            csv = specific_df.to_csv(index=False, header=False)
+                            b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+                            href = f'<a href="data:file/csv;base64,{b64}" download="specific_graph_{graph_id}csv">Download CSV File</a>'
+                            st.markdown(href, unsafe_allow_html=True)
+                        else:
+                            st.error("Invalid Graph ID")
+                    else:
+                        st.error("Please enter a valid Graph ID")
+                else:
+                    st.error("Please generate all possible graphs first.")
+        else:
+            st.error("Invalid adjacency matrix")
+
+
+# Example usage section
+st.title("Example Usage")
+example_matrix = matrices.simulation_matrix()
+st.write("We set up an example dataset for you to explore the functionalities of LeOpardLink.")
+st.write("The example dataset is a pre-determined adjacency matrix with randomly generated uncertainties.")
+st.write("True No. individuals: 7")
+# Add a slider to adjust the uncertainty level
+uncertainty_level = st.slider("Adjust Uncertainty Level", 0.0, 1.0, 0.2, 0.1)
+example_matrix = matrices.random_uncertainties(example_matrix, uncertainty_level)
+st.session_state.example_matrix = example_matrix
+st.write(example_matrix)
+
+
+
+
+# Plot current graph
+if st.button("(Example)Plot Current Graph"):
+    example_matrix = st.session_state.example_matrix
+    port = find_free_port()
+    plot_graph(example_matrix, port)
+
+    # Generate all possible graphs
+if st.button("(Example)Generate All Possible Graphs"):
+    st.write("(Example)Start generating")
+    example_list = matrices.create_adjlist(example_matrix)
+    st.write("(Example)Generated list")
+    example_graphs = matrices.generate_graphs_with_transitivity(example_list)
+    st.write("(Example)Generated matrix")
+    st.session_state.example_graphs = example_graphs  # Store all graphs in session state
+    st.write("(Example)made global")
+    example_graph_properties = matrices.graph_property(example_graphs)
+    st.write("(Example)Generated property")
+    st.write("(Example)Generated all possible graphs")
+    st.write(example_graph_properties)
+
+         # Plot specific graph
+graph_id = st.text_input("(Example)Enter Graph ID to Plot")
+if st.button("(Example)Plot Specific Graph"):
+    if 'example_graphs' in st.session_state:
+        example_graphs = st.session_state.example_graphs
+        if graph_id.isdigit():
+            graph_id = int(graph_id)
+            if 0 <= graph_id < len(example_graphs):
+                specific_graph = example_graphs[graph_id]
+                specific_matrix = matrices.adjlist2matrix(specific_graph)       
+                port = find_free_port()
+                st.write("Using port: ", port)
+                plot_graph(specific_matrix, port)
+            else:
+                st.error("Invalid Graph ID")
+        else:
+            st.error("Please enter a valid Graph ID")
+    else:
+        st.error("Please generate all possible graphs first.")
+
+# Footer
+st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("© 2024 Team [LeOpardLink](github.com/guoziqi1275/LeOpardLink/LeOpardLink). All rights reserved.")
+st.markdown("CSE583 - Autumn 2024, University of Washington")
