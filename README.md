@@ -42,6 +42,10 @@ The package requires the following dependencies:
 
 - `jaal`>=0.1.7
 
+- `pyvis`
+
+- `streamlit`
+
 ## Features
 - **Network Visualization:** Generate an interactive plot of the current network.
 
