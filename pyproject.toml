@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LeOpardLink"
-version = "0.1.3.1"
+version = "0.1.3.2"
 authors = [
   {name="Courtney Allen", email="ckallen@uw.edu"},
   {name="Ziqi Guo", email="guoziqi@uw.edu"},
@@ -18,7 +18,8 @@ dependencies = [
 	  "numpy",
     "pandas",
     "networkx",
-    "jaal"
+    "jaal",
+    "pyvis"
 ] 
 classifiers = [
     "Programming Language :: Python :: 3",

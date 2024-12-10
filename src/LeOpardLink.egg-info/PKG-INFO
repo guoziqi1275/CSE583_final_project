@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: LeOpardLink
-Version: 0.1.3.1
+Version: 0.1.3.2
 Summary: A package to generate all possible graphs for wildlife individual identification, and visualize them
 Author-email: Courtney Allen <ckallen@uw.edu>, Ziqi Guo <guoziqi@uw.edu>, Guy Bennevat Haninovich <guybh@uw.edu>, Jiangyue Wang <jyuewang@uw.edu>
 Project-URL: Homepage, https://github.com/guoziqi1275/LeOpardLink
@@ -15,6 +15,7 @@ Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: networkx
 Requires-Dist: jaal
+Requires-Dist: pyvis
 
 # LeOpardLink
 [![Pylint](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/pylint.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/pylint.yml)
@@ -22,11 +23,14 @@ Requires-Dist: jaal
 [![Python application](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml)
 [![Python Package using Conda](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package-conda.yml)
 
-[![Upload Python Package](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-publish.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-publish.yml)
-
 **Welcome to LeOpard Link (LOL)**
 
 !["LOL logo"](./images/design/LOL-logo-color.png)
+
+Update on Dec 9th, 2024: We have a [web app](https://leopardlink.streamlit.app)! Come and try it out! 
+
+> [!NOTE]
+> Currently, the graph plotting function in our web app is not working. For local usage of streamlit UI with full functions, see below.
 
 This package is designed to assemble visual networks of detections of marked animal individuals (e.g., leopards, snow leopards, tigers, etc.) from camera-trapping datasets. We define detections as nodes in the graph, and the relationships of any pair of detections to be edges in the graph. The edges can be certain (two detections are/aren't the same individual), or uncertain (we do not know if the two detections are the same or not, e.g., detection 1 captures the left flank while detection 2 captures the right flank).
 
@@ -39,6 +43,15 @@ To install the package from PyPI:
 ```sh
 pip install LeOpardLink
 ```
+
+To use streamlit UI locally:
+
+```sh
+pip install streamlit
+# Inside our root directory:
+streamlit run ui_code.py
+```
+
 ## Dependencies
 The package requires the following dependencies:
 
@@ -144,7 +157,10 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 [Courtney Allen](ckallen@uw.edu)
 
-- PLEASE WRITE YOUR CONTRIBUTIONS HERE
+- Wrote documentation
+- Created hand-drawn visualizations
+- Example data set up
+- Contributed to use cases
 
 [Ziqi Guo](guoziqi@uw.edu)
 
@@ -166,3 +182,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - Wrote documentation
 - Set up packaging
 - Set up continuous integration via GitHub Actions
+- UI implementation

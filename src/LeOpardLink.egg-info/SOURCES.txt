@@ -6,6 +6,7 @@ environment.yml
 pyproject.toml
 requirements.txt
 ui_code.py
+.devcontainer/devcontainer.json
 .github/workflows/pylint.yml
 .github/workflows/python-app.yml
 .github/workflows/python-package-conda.yml
@@ -18,7 +19,6 @@ doc/Design_functional-specification.md
 doc/authentication.md
 doc/progress-stand-up_241126.md
 doc/technology-reviews.pdf
-doc/usecase.md
 images/cse-583-project-simulation-matrix-drawing-1.jpg
 images/leopard.png
 images/design/.DS_Store
@@ -26,6 +26,7 @@ images/design/LOL-logo-color.png
 images/design/LOL.png
 images/design/LOLcroped.png
 images/design/dot.png
+images/design/dot_transp.png
 images/design/login.png
 images/design/new_account.png
 scripts_example/leopard.py

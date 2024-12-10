@@ -363,8 +363,6 @@ def jaal_data_prepare_edge(g):
     edge_g_df['to'] = edge_g_df['to'].astype(str)
     edge_g_df['weight'] = edge_g_df['weight'].apply(lambda x: x['weight'])
 
-    # get rid of self-loop
-    edge_g_df = edge_g_df[edge_g_df['from'] != edge_g_df['to']]
     return edge_g_df
 
 def jaal_plot(node_df, edge_df, port):

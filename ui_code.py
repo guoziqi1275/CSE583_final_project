@@ -6,6 +6,9 @@ import threading
 import base64
 import time
 import socket
+import os
+import streamlit.components.v1 as components
+from pyvis.network import Network
 from LeOpardLink import matrices
 
 # Function to read the image and encode it as base64
@@ -23,20 +26,46 @@ def load_csv(file):
         return None
     
 # Function to plot the graph using Jaal and open it in a new browser tab
-def plot_graph(adj_matrix, port):
+def plot_graph(adj_matrix, uncertain = True):
     G = nx.from_numpy_array(adj_matrix)
-    node_df = matrices.jaal_data_prepare_node(G)
     edge_df = matrices.jaal_data_prepare_edge(G)
-    edge_df['weight_vis'] = edge_df['weight'].astype(str)
-    # Start a new thread to open the Jaal plot in a new browser tab
-    def open_jaal_plot():
-        matrices.jaal_plot(node_df = node_df, edge_df = edge_df, port = port)
+    if uncertain != True:
+        edge_df = edge_df[edge_df['weight'] != -1]
+    edge_df['from_node_name'] = edge_df['from'].astype(str)
+    edge_df['to_node_name'] = edge_df['to'].astype(str)
+    G = nx.from_pandas_edgelist(edge_df, 'from_node_name','to_node_name', 'weight')
+    # keep all self loops
+    net = Network(
+                       height='400px',
+                       width='100%',
+                       bgcolor='#222222',
+                       font_color='white'
+                      )
+    net.from_nx(G)
+    net.repulsion(
+                        node_distance=100,
+                        central_gravity=0.33,
+                        spring_length=110,
+                        spring_strength=0.10,
+                        damping=0.95
+                       )
+
+    try:
+        path = '/tmp'
+        net.save_graph(f'{path}/pyvis_graph.html')
+        HtmlFile = open(f'{path}/pyvis_graph.html', 'r', encoding='utf-8')
+
+    # Save and read graph as HTML file (locally)
+    except:
+        path = '/html_files'
+        net.save_graph(f'{path}/pyvis_graph.html')
+        HtmlFile = open(f'{path}/pyvis_graph.html', 'r', encoding='utf-8')
+
+    # Load HTML file in HTML component for display on Streamlit page
+    components.html(HtmlFile.read(), height=435)
     
-    thread = threading.Thread(target=open_jaal_plot)
-    time.sleep(0.5)
-    thread.start()
-    # Display the local host link in Streamlit
-    st.markdown("[Open Jaal Plot](http://localhost:" + str(port) + ")")
+    
+    
 
 # Function to find a free port
 def find_free_port(starting_port = 8050):
@@ -175,11 +204,12 @@ def upload_page():
                 st.success("Valid adjacency matrix")
 
                 # Plot current graph
-                if st.button("Plot Current Graph"):
-                    port = find_free_port()
-                    plot_graph(adj_matrix, port)
-                    
-
+                if st.button("(Example)Plot Current Graph"):
+                    st.markdown("### Include uncertain edges")
+                    plot_graph(adj_matrix,True)
+        
+                    st.markdown("### Exclude uncertain edges")
+                    plot_graph(adj_matrix,False)
                 # Generate all possible graphs
                 if st.button("Generate All Possible Graphs"):
                     adj_list = matrices.create_adjlist(adj_matrix)
@@ -201,13 +231,9 @@ def upload_page():
                                 specific_graph = all_graphs[graph_id]
                                 specific_matrix = matrices.adjlist2matrix(specific_graph)
                                 
-                                port = find_free_port()
-                                st.write("Using port: ", port)
-                                plot_graph(specific_matrix, port)
-                            
+                                plot_graph(specific_matrix)
                                 # Convert the specific matrix to a DataFrame for download
                                 specific_df = pd.DataFrame(specific_matrix)
-                                
                                 # Create a CSV download button
                                 csv = specific_df.to_csv(index=False, header=False)
                                 b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
@@ -229,32 +255,35 @@ def upload_page():
     st.write("We set up an example dataset for you to explore the functionalities of LeOpardLink.")
     st.write("The example dataset is a pre-determined adjacency matrix with randomly generated uncertainties.")
     st.write("True No. individuals: 7")
+    
     # Add a slider to adjust the uncertainty level
     uncertainty_level = st.slider("Adjust Uncertainty Level", 0.0, 1.0, 0.2, 0.1)
-    example_matrix = matrices.random_uncertainties(example_matrix, uncertainty_level)
-    st.session_state.example_matrix = example_matrix
-    st.write(example_matrix)
-
-
-
+    
+    if st.button("Generate Example Matrix"):
+        example_matrix = matrices.random_uncertainties(example_matrix, uncertainty_level)
+        st.session_state.example_matrix = example_matrix
+    
+        if 'example_matrix' in st.session_state:
+            st.write(st.session_state.example_matrix)
 
     # Plot current graph
     if st.button("(Example)Plot Current Graph"):
+        st.markdown("### Include uncertain edges")
         example_matrix = st.session_state.example_matrix
-        port = find_free_port()
-        plot_graph(example_matrix, port)
+        plot_graph(example_matrix,True)
+        
+        st.markdown("### Exclude uncertain edges")
+        example_matrix = st.session_state.example_matrix
+        plot_graph(example_matrix,False)
 
         # Generate all possible graphs
     if st.button("(Example)Generate All Possible Graphs"):
         st.write("(Example)Start generating")
+        example_matrix = st.session_state.example_matrix
         example_list = matrices.create_adjlist(example_matrix)
-        st.write("(Example)Generated list")
         example_graphs = matrices.generate_graphs_with_transitivity(example_list)
-        st.write("(Example)Generated matrix")
         st.session_state.example_graphs = example_graphs  # Store all graphs in session state
-        st.write("(Example)made global")
         example_graph_properties = matrices.graph_property(example_graphs)
-        st.write("(Example)Generated property")
         st.write("(Example)Generated all possible graphs")
         st.write(example_graph_properties)
 
@@ -267,17 +296,14 @@ def upload_page():
                 graph_id = int(graph_id)
                 if 0 <= graph_id < len(example_graphs):
                     specific_graph = example_graphs[graph_id]
-                    specific_matrix = matrices.adjlist2matrix(specific_graph)       
-                    port = find_free_port()
-                    st.write("Using port: ", port)
-                    plot_graph(specific_matrix, port)
+                    specific_matrix = matrices.adjlist2matrix(specific_graph)
+                    plot_graph(specific_matrix)
                 else:
                     st.error("Invalid Graph ID")
             else:
                 st.error("Please enter a valid Graph ID")
         else:
             st.error("Please generate all possible graphs first.")
-
     # Footer
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("© 2024 Team [LeOpardLink](https://github.com/guoziqi1275/LeOpardLink). All rights reserved.")
