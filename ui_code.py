@@ -204,7 +204,7 @@ def upload_page():
                 st.success("Valid adjacency matrix")
 
                 # Plot current graph
-                if st.button("(Example)Plot Current Graph"):
+                if st.button("Plot Current Graph"):
                     st.markdown("### Include uncertain edges")
                     plot_graph(adj_matrix,True)
         
