@@ -149,7 +149,7 @@ def main_page():
 
     # Footer
     st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown("© 2024 Team [LeOpardLink](github.com/guoziqi1275/LeOpardLink/LeOpardLink). All rights reserved.")
+    st.markdown("© 2024 Team [LeOpardLink](https://github.com/guoziqi1275/LeOpardLink). All rights reserved.")
     st.markdown("CSE583 - Autumn 2024, University of Washington")
 
 # Upload Page
@@ -280,7 +280,7 @@ def upload_page():
 
     # Footer
     st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown("© 2024 Team LeOpardLink. All rights reserved.")
+    st.markdown("© 2024 Team [LeOpardLink](https://github.com/guoziqi1275/LeOpardLink). All rights reserved.")
     st.markdown("CSE583 - Autumn 2024, University of Washington")
 
 # Render the appropriate page
