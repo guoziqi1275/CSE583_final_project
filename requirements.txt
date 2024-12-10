@@ -9,3 +9,9 @@ pytest
 setuptools
 tomlkit
 wheel
+LeOpardLink
+threading
+webbrowser
+base64
+time
+socket
