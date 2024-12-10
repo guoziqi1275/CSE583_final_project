@@ -139,7 +139,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 [Courtney Allen](ckallen@uw.edu)
 
 - Wrote documentation
+- Created hand-drawn visualizations
 - Example data set up
+- Contributed to use cases
 
 [Ziqi Guo](guoziqi@uw.edu)
 
