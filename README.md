@@ -10,6 +10,8 @@
 
 !["LOL logo"](./images/design/LOL-logo-color.png)
 
+Update on Dec 9th, 2024: We have a [web app](https://leopardlink.streamlit.app)! Come and try it out! 
+
 This package is designed to assemble visual networks of detections of marked animal individuals (e.g., leopards, snow leopards, tigers, etc.) from camera-trapping datasets. We define detections as nodes in the graph, and the relationships of any pair of detections to be edges in the graph. The edges can be certain (two detections are/aren't the same individual), or uncertain (we do not know if the two detections are the same or not, e.g., detection 1 captures the left flank while detection 2 captures the right flank).
 
 While this package was motivated for the use of wildlife camera trap images, it has many applications in other picture-relationship-based projects.

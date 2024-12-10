@@ -62,10 +62,10 @@
 # Plan
 
  1. [Done!] All functions needed (try to improve complexity, now we have O(2^(n^2))...) - Week 10
- 2. Connect our package to streamlit - Week 10
+ 2. [Done!] Connect our package to streamlit - Week 10
  3. [Done (waiting for conda-forge review)] Make our package downloadable/installable via github, pip, or conda - Week 11
- 4. Fully connect our package to streamlit webapp - Week 11
- 5. Full documentation of function usage, tutorial, citations, environments - Week 12 before ddl 
+ 4. [Done!] Fully connect our package to streamlit webapp - Week 11
+ 5. [Done!] Full documentation of function usage - Week 12 before ddl 
 
 
 

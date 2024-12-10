@@ -1,9 +1,14 @@
 # Background & why this matters
 
+Wildlife monitoring and conservation are crucial for understanding ecosystem dynamics and mitigating biodiversity loss. Identifying individual animals within a species is a cornerstone of wildlife studies, as it enables researchers to estimate population sizes, track movements, and understand behavioral patterns. Traditionally, this identification relies on manual or AI processes with high uncertianty, particularly when using camera-trap images to distinguish individuals based on unique but blurry patterns, such as rosettes on leopards.
+
+LeOpardLink addresses the challenge by treating detections (e.g., photographs of animals) as nodes and their relationships (e.g., whether two images represent the same individual) as edges in a graph. By incorporating uncertain relationships and generating all plausible graph configurations under transitivity constraints, the package provides a robust framework for population estimation and individual identification.
+This tool is not only vital for wildlife conservation but also has broad applications in any domain requiring image-based relationship mapping like social network analysis. By combining innovative algorithms with user-friendly visualization features, LeOpardLink empowers researchers and practitioners to extract actionable insights from complex datasets efficiently.
+
 # User stories
 1. For conservation practitioners
 
-Dave is a conservation practitioner, he gathered leopard photos from cameras set up in the field, and he wants to identify leopards in a simple logic (i.e., decide if the two pictures are the same individual multiple ttimes). He doesn't know any coding stuff or any graph theory. He just want to do the identification task in a straightforward way and get a number of how many individuals are there.
+Dave is a conservation practitioner, he gathered leopard photos from cameras set up in the field, and he wants to identify leopards in a simple logic (i.e., decide if the two pictures are the same individual multiple ttimes). He doesn't know any coding stuff or any graph theory, but he do know how to use a spreadsheet. He just want to do the identification task in a straightforward way and get a number of how many individuals are there.
 
 2. For researcher (with basic coding and data structure skills)
 
@@ -30,7 +35,7 @@ A graph of 20 nodes (belonging to 5 clusters/leopard individuals). We will use t
 
 1. Network visualization
 
-- Objective: Get a interactive plot of the current network
+- Objective: Get an interactive plot of the current network
 
 - Expected interaction: 
     - Upload csv file of matrix
@@ -38,12 +43,12 @@ A graph of 20 nodes (belonging to 5 clusters/leopard individuals). We will use t
 
 2. Individual counts
 
-- Objective: Calculate how many individuals are there, mean, sd, 95%CI
+- Objective: Calculate how many individuals are there.
 
 - Expected interaction
     - Upload csv file of matrix
     - Generate all possible graphs by clicking a button
-    - Calculate the mean, sd, 95% CI of all possible solutions and display
+    - Display all possible solutions and No. individuals
     - Selectively plot some of the graphs by clicking buttons
 
 3. Individual count - minimum case
