@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import networkx as nx
 import threading
-import webbrowser
 import base64
 import time
 import socket
