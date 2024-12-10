@@ -4,8 +4,6 @@
 [![Python application](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-app.yml)
 [![Python Package using Conda](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-package-conda.yml)
 
-[![Upload Python Package](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-publish.yml/badge.svg)](https://github.com/guoziqi1275/LeOpardLink/actions/workflows/python-publish.yml)
-
 **Welcome to LeOpard Link (LOL)**
 
 !["LOL logo"](./images/design/LOL-logo-color.png)
